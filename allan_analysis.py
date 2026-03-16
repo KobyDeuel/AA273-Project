@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 def allan_variance(omega, t0, max_clusters=100):
-    
+    #set up log space
     N = len(omega)
     n_values = np.unique(np.logspace(0, np.log10(N//2), max_clusters).astype(int))
     T = n_values * t0

@@ -46,6 +46,7 @@ plt.ylabel(r"$\sigma(\tau)$ [rad/s]")
 plt.title(r"$g_z$")
 plt.grid(True, which="both")
 
+#get value at t=1
 index = np.argmin(np.abs(T - 1.0))
 N_gz = sigma_T[index]
 print(f"N_gz = {N_gz:.6f}")

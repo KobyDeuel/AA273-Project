@@ -4,18 +4,19 @@ import csv
 import matplotlib.pyplot as plt
 import pandas as pd
 
-
+#set up maker
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
 dp = cv2.aruco.DetectorParameters()
 dp.minMarkerPerimeterRate = 0.001
 dp.maxMarkerPerimeterRate = 10.0
 detector = cv2.aruco.ArucoDetector(aruco_dict, dp)
 
-
+#load video
 cap = cv2.VideoCapture("robot_run.mp4")
 if not cap.isOpened():
     raise FileNotFoundError(f"failed to open file")
 
+#get fps and frames
 fps = cap.get(cv2.CAP_PROP_FPS)
 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
@@ -27,9 +28,11 @@ while True:
     if not ret:
         break
 
+    #get marker from detector
     corners, ids, _ = detector.detectMarkers(frame)
     timestamp = current_frame / fps
 
+    #loop to get coords and heading from maker position
     if ids is not None:
         for i, coords in enumerate(corners):
             if ids[i][0] != 0:

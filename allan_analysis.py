@@ -7,7 +7,7 @@ def allan_variance(omega, t0, max_clusters=100):
     N = len(omega)
     n_values = np.unique(np.logspace(0, np.log10(N//2), max_clusters).astype(int))
     T = n_values * t0
-    average = np.zeros(len(n_values))
+    allan_var = np.zeros(len(n_values))
 
     for i, n in enumerate(n_values):
         num_clusters = N//n
@@ -26,9 +26,9 @@ def allan_variance(omega, t0, max_clusters=100):
             omega_bar_next = omega_bar[k+1]
             omega_bar_k = omega_bar[k]
             total += (omega_bar_next - omega_bar_k)**2
-        average[i] = 0.5*total/(len(omega_bar) -1)
+        allan_var[i] = 0.5*total/(len(omega_bar) -1)
 
-    return T, average
+    return T, allan_var
 
 
 # Load IMU data
@@ -37,8 +37,8 @@ gz_raw = rows["gz"].values.astype(float)
 
 t0 = 1.0 /50 # 50 Hz
 
-T, average = allan_variance(gz_raw, t0)
-sigma_T = np.sqrt(average)
+T, allan_var = allan_variance(gz_raw, t0)
+sigma_T = np.sqrt(allan_var)
 
 plt.loglog(T, sigma_T)
 plt.xlabel(r"$\tau$ (s)")
